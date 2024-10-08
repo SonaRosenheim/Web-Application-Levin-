@@ -1,0 +1,21 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/navfoot.css' %}">
+
+<header id="header" class="header">
+  <div class="nav-logo">
+    <a href="{% url 'home' %}" class="navbrand"><h1>Levin<span>.</span></h1></a> 
+  </div>    
+  <div class="nav-link">
+    <nav class="navbar">
+      <a href="{% url 'home' %}"><ul>Home</ul></a>
+      <a href="{% url 'about' %}"><ul>About Us</ul></a>
+      <a href="#"><ul>Store</ul></a>
+      <a href="#"><ul>Contact</ul></a>
+      <div class="animation start-home"></div>
+    </nav>
+  </div>
+</header>
+
+{% block content %}
+
+{% endblock content %}

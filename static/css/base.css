@@ -1,0 +1,23 @@
+:root {
+    --font-default: "Sans Serif", "Helvetica Neue", Arial;
+    --font-primary: "Open Sans";
+}
+
+:root {
+    --color-default: #001319;
+    --color-primary: #0086b3;
+    --color-secondary: #ffffff;
+    --color-tertiary: #00eeff;
+}
+
+body {
+    margin-top: 120px;
+    font-family: var(--font-primary);
+    color: var(--color-secondary);
+    background-color: var(--color-default);
+}
+
+
+
+
+
