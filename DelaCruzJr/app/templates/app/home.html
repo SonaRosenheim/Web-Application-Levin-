@@ -1,0 +1,49 @@
+{% extends 'app/base.html' %}
+{% include 'app/navbar.html' %}
+{% load static %}
+
+{% block content %}
+
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    
+    <section class="hero">
+        <div class="hero-container">
+            <div class="section-header">
+                <h2>Live on with<br>Your Elegance Needs!</h2>
+                <p> A place where your shoe defines your lifestyle. Express yourself
+                with our products.</P>
+            </div>
+            <div class="section-logo"> 
+                <img src="{% static 'images/Section-Timberland.png' %}">
+            </div>
+        </div>
+    </section>
+
+    <section class="product-image-container">
+        <p class="top-title">HOT DROPS!</p>
+        <h1 class="main-title">Check This Out!</h1>
+            <div class="product-image-grid">
+                <div class="product-image-grid-left-side">
+                    <div class="item-1-container">
+                        <img src="{% static 'images/Item-1.jpg' %}">
+                    </div>
+                </div>
+                <div class="product-image-grid-right-side">
+                    <div class="item-2-container">
+                        <img src="{% static 'images/Item-2.jpg' %}">
+                    </div>
+                    <div class="item-3-container">
+                       <img src="{% static 'images/Item-3.jpg' %}">
+                    </div>
+                    <div class="item-4-container">
+                        <img src="{% static 'images/Item-4.jpg' %}">
+                    </div>
+                    <div class="item-5-container">
+                       <img src="{% static 'images/Item-5.jpg' %}">
+                    </div>
+                </div>
+            </div>    
+    </section>
+
+
+{% endblock content %}

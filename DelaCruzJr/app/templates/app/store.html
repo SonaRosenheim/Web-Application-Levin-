@@ -1,0 +1,143 @@
+{% extends 'app/base.html' %}
+{% include 'app/navbar.html' %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/store.css' %}">
+
+    <div class="body-container">
+
+        <div class="category-container">
+            <a href="#">
+                <button class="category">
+                    Boots
+                </button>
+            </a>
+            <a href="#">
+                <button class="category">
+                    Shoes
+                </button>
+            </a>
+             <a href="#">
+                <button class="category">
+                    Sneakers
+                </button>
+            </a>
+            <a href="#" >
+                <button class="category">
+                    Sandals
+                </button>
+            </a>
+        </div>
+
+        <div class="nav-path">
+            <a href="{% url 'home' %}">Home</a><span class="slash">/</span><span>Store</span>
+        </div>
+
+        <br><br>
+
+        <h1 class="store-header">Hot Exclusives!</h1>    
+
+        <div class="dropdown-container">
+            <button class="dropdown" id="color-dropdown">
+                <span>Color</span>
+                <i class='fas fa-angle-down'></i>
+            </button>
+            <div class="dropdown-content" id="color-dropdown-content">
+                <label class="container">One
+                <input type="checkbox">
+                <span class="checkmark"></span>
+                </label>
+
+                <label class="container">Two
+                <input type="checkbox">
+                <span class="checkmark"></span>
+                </label>
+
+                <label class="container">Three
+                <input type="checkbox">
+                <span class="checkmark"></span>
+                </label>
+            </div>
+            <button class="dropdown">
+                <span>Price</span>
+                <i class='fas fa-angle-down'></i>
+            </button>
+            <div class="dropdown-content" id="price-dropdown-content">
+                <label class="container">₱ 999.00
+                <input type="checkbox">
+                <span class="checkmark"></span>
+                </label>
+
+                <label class="container">₱ 999.00 - ₱1999.00
+                <input type="checkbox">
+                <span class="checkmark"></span>
+                </label>
+
+                <label class="container">₱ 1999.00 - ₱2999.00
+                <input type="checkbox">
+                <span class="checkmark"></span>
+                </label>
+            </div>
+            <button class="dropdown">
+                <span>Footwear Size</span>
+                <i class='fas fa-angle-down'></i>
+            </button>
+            <div class="dropdown-content" id="footwear-dropdown-content">
+                <label class="container">8
+                <input type="checkbox">
+                <span class="checkmark"></span>
+                </label>
+
+                <label class="container">9
+                <input type="checkbox">
+                <span class="checkmark"></span>
+                </label>
+
+                <label class="container">10
+                <input type="checkbox">
+                <span class="checkmark"></span>
+                </label>
+
+                <label class="container">11
+                <input type="checkbox">
+                <span class="checkmark"></span>
+                </label>
+
+                <label class="container">12
+                <input type="checkbox">
+                <span class="checkmark"></span>
+                </label>
+            </div>
+            <button class="dropdown">
+                <span>Manipulate Products Here</span>
+                <i class='fas fa-angle-down'></i>
+            </button>
+            <div class="dropdown-content" id="product-dropdown-content">
+                <a href="{% url 'product-create' %}"><button class="dropdown-button" id="dropdownBtn">Add New Product</button></a>
+
+                <a href="{% url 'product-edit' %}"><button class="dropdown-button" id="dropdownBtn">Edit / Delete Existing Product</button></a>
+            </div>
+        </div>
+
+        <section class="display-background">
+            <diV class="product-container">
+                    {% for product in products %}
+                    <a href="{% url 'product-detail' product.pk %}">
+                        <div class="product">
+                            <img src="{{product.prod_photo.url}}">
+                            <h1>{{product.prod_name}}</h1>
+                            <p>Certified Lether and Water Resistant</p>
+                            <h2>₱{{product.prod_price}}</h2>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+        </section>
+
+    </div>
+
+{% endblock content %}
+
+ 
