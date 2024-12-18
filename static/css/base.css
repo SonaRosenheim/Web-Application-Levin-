@@ -1,6 +1,7 @@
 :root {
     --font-default: "Sans Serif", "Helvetica Neue", Arial;
     --font-primary: "Open Sans";
+    --font-secondary: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 :root {
@@ -8,16 +9,26 @@
     --color-primary: #0086b3;
     --color-secondary: #ffffff;
     --color-tertiary: #00eeff;
+    --color-quaternary: #000000;
+    --color-quinary: #e6e5e5;
+    --color-senary: rgb(127, 127, 144);
+    --color-septenary: rgb(255, 0, 0);
 }
 
 body {
-    margin-top: 120px;
+    margin-top: 120px;  
     font-family: var(--font-primary);
-    color: var(--color-secondary);
-    background-color: var(--color-default);
+    color: var(--color-quaternary);
+    background-color: var(--color-secondary);
 }
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-
-
-
+body {
+    margin: 0;
+    padding: 0;
+}
