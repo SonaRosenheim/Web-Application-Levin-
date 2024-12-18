@@ -84,7 +84,8 @@ class CreateCategoryView(View):
 
         category = Category.objects.create(category_name=category_name)
         return JsonResponse({'id': category.category_id, 'name': category.category_name})
-    
+
+# sir hindi na ako gumamit ng createview and deleteview bcs I wanted it to be dynamic, not having to redirect to another page.
 class ProductEditView(ListView):
     model = Product
     context_object_name = 'products'
