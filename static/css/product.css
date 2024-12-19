@@ -4,7 +4,7 @@
 
 .nav-path {
     position: relative;
-    top: 25px;
+    top: 30px;
     margin-left: 30px;
     
 }
@@ -160,9 +160,14 @@ button:active .button_top {
 }
 
 @media (max-width: 1440px) {
+    .nav-path {
+        top: 55px;
+    }
+
     .product-grid-container {
         display: grid;
         grid-template-columns: repeat(2 , 1fr);
+        margin-top: 80px;
     }
 
     .product-image-container img {
@@ -183,8 +188,17 @@ button:active .button_top {
 }
 
 @media (max-width: 1024px) {
+    .nav-path {
+        top: 50px;
+    }
+
+    .nav-path a, .nav-path span {
+        font-size: 17px;
+    }
+
     .product-grid-container {
         grid-template-columns: repeat(1, 1fr);
+        margin-top: 70px;
     }
 
     .product-image-container img {
@@ -208,12 +222,12 @@ button:active .button_top {
     }
 
     .size-selector {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(5, 1fr);
         row-gap: 10px;
     }
 
     .box-label {
-        width: 220px;
+        width: 180px;
         height: 40px;
     }
 

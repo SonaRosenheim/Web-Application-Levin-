@@ -107,13 +107,13 @@
     z-index: 10;
 }
 #price-dropdown-content {
-    left: 9rem;
+    left: 0;
 }
 #footwear-dropdown-content {
-    left: 19rem;
+    left: 10rem;
 }
 #product-dropdown-content{
-    left: 30em;
+    left: 22rem;
     padding: 10px 10px;
 }
 
@@ -131,6 +131,7 @@
 #dropdownBtn {
     margin-bottom: 10px;
 }
+
 
 .dropdown-content label {
     padding-top: 5px;
@@ -347,14 +348,11 @@
     .dropdown {
         padding: 10px 28px;
     }
-    #price-dropdown-content {
-        left: 8rem;
-    }
     #footwear-dropdown-content {
-        left: 17rem;
+        left: 8.7rem;
     }
     #product-dropdown-content {
-        left: 28rem; 
+        left: 20rem; 
     }
 
     br {
@@ -404,26 +402,23 @@
 
     .dropdown {
         font-size: 13px;
-        padding: 7px 28px;
+        padding: 7px 35px;
         margin-right: 0px;
     }
-    #color-dropdown-content {
-        top: 2.3rem;
-    }
-    #color-dropdown {
+    #price-dropdown {
         margin-bottom: 10px;
     }
     #price-dropdown-content {
         top: 2.3rem;
-        left: 7rem;
+        left: 0;
     }
     #footwear-dropdown-content {
         top: 2.3rem;
-        left: 14.5rem;
+        left: 8rem;
     }
     #product-dropdown-content {
         top: 5.2rem;
-        left: 0rem;
+        left: 0;
     }
 
     .product-container {
@@ -449,7 +444,7 @@
     }
     #footwear-dropdown-content {
         top: 2.3rem;
-        left: 11.5rem;
+        left: 5.5rem;
     }
 }
 
