@@ -9,26 +9,18 @@
     <div class="body-container">
 
         <div class="category-container">
-            <a href="#">
-                <button class="category">
+                <button id="category-button" data-category="Boots" class="category">
                     Boots
                 </button>
-            </a>
-            <a href="#">
-                <button class="category">
+                <button id="category-button" data-category="Shoes" class="category">
                     Shoes
                 </button>
-            </a>
-             <a href="#">
-                <button class="category">
+                <button id="category-button" data-category="Sneakers" class="category">
                     Sneakers
                 </button>
-            </a>
-            <a href="#" >
-                <button class="category">
+                <button id="category-button" data-category="Sandals" class="category">
                     Sandals
                 </button>
-            </a>
         </div>
 
         <div class="nav-path">
@@ -124,19 +116,44 @@
         <section class="display-background">
             <diV class="product-container">
                     {% for product in products %}
-                    <a href="{% url 'product-detail' product.pk %}">
-                        <div class="product">
+                    
+                        <div class="product"  data-category="{{ product.category_prod.category_name }}">
+                        <a href="{% url 'product-detail' product.pk %}">
                             <img src="{{product.prod_photo.url}}">
                             <h1>{{product.prod_name}}</h1>
                             <p>Certified Lether and Water Resistant</p>
                             <h2>₱{{product.prod_price}}</h2>
+                         </a>
                         </div>
-                    </a>
+                   
                     {% endfor %}
                 </div>
         </section>
 
     </div>
+
+    <script>
+    
+        document.addEventListener("DOMContentLoaded", function () {
+            const categoryButtons = document.querySelectorAll("#category-button");
+            const products = document.querySelectorAll(".product");
+
+            categoryButtons.forEach(button => {
+                button.addEventListener("click", () => {
+                    const category = button.getAttribute("data-category");
+
+                    products.forEach(product => {
+                        if (product.getAttribute("data-category") === category) {
+                            product.style.display = "block";
+                        } else {
+                            product.style.display = "none";
+                        }
+                    });
+                });
+            });
+        });
+            
+    </script>
 
 {% endblock content %}
 
