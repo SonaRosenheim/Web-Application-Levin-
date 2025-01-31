@@ -1,0 +1,222 @@
+{% extends 'app/base.html' %}
+{% include 'app/navbar.html' %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/store.css' %}">
+
+    <div class="body-container">
+
+        <div class="category-container">
+                <button id="category-button" data-category="Boots" class="category">
+                    Boots
+                </button>
+                <button id="category-button" data-category="Leather" class="category">
+                    Leather
+                </button>
+                <button id="category-button" data-category="Sneakers" class="category">
+                    Sneakers
+                </button>
+                <button id="category-button" data-category="Sandals" class="category">
+                    Sandals
+                </button>
+        </div>
+
+        <div class="nav-path">
+            <a href="{% url 'home' %}">Home</a><span class="slash">/</span><span>Store</span>
+        </div>
+
+        <br><br>
+
+        <h1 class="store-header">Hot Exclusives!</h1>    
+
+        <div class="dropdown-container">
+            <button class="dropdown" id="price-dropdown">
+                <span>Price</span>
+                <i class='fas fa-angle-down'></i>
+            </button>
+            <div class="dropdown-content" id="price-dropdown-content">  
+                <label class="container">Lowest - Highest
+                <input type="checkbox" name="price-sort" id="sort-price-asc">
+                <span class="checkmark"></span>
+                </label>
+                <label class="container">Highest - Lowest
+                <input type="checkbox" name="price-sort" id="sort-price-desc">
+                <span class="checkmark"></span>
+                </label>
+            </div>
+            <button class="dropdown">
+                <span>Name</span>
+                <i class='fas fa-angle-down'></i>
+            </button>
+            <div class="dropdown-content" id="footwear-dropdown-content">
+                <label class="container">Abc - Xyz
+                <input type="checkbox"  name="name-sort" id="sort-name-asc">
+                <span class="checkmark"></span>
+                </label>
+                <label class="container">Xyz - Abc
+                <input type="checkbox"  name="name-sort" id="sort-name-desc">
+                <span class="checkmark"></span>
+                </label>
+            </div>
+            {% if request.user.is_staff %}
+            <button class="dropdown">
+                <span>Manipulate Products Here</span>
+                <i class='fas fa-angle-down'></i>
+            </button>
+            <div class="dropdown-content" id="product-dropdown-content">
+                <a href="{% url 'product-create' %}"><button class="dropdown-button" id="dropdownBtn">Add New Product</button></a>
+
+                <a href="{% url 'product-edit' %}"><button class="dropdown-button" id="dropdownBtn">Edit / Delete Existing Product</button></a>
+            </div>
+            {% endif %}
+        </div>
+
+        <section class="display-background">
+            <diV class="product-container" id="product-container">
+                    {% for product in products %}
+                    
+                        <div class="product"  data-price="{{ product.prod_price }}" data-name="{{ product.prod_name }}" data-category="{{ product.category_prod.category_name }}">
+                            <a href="{% url 'product-detail' product.pk %}">
+                                <img src="{{product.prod_photo.url}}">
+                                <h1>{{product.prod_name}}</h1>
+                                <p>Certified Lether and Water Resistant</p>
+                                <div class="action-container">
+                                    <div class="price">
+                                        <h2>₱{{ product.prod_price }}</h2>
+                                    </div>
+                            </a>
+                                    <div class="button">
+                                        <button class="addToCart btn" data-product-id="{{ product.pk }}">Add To Cart</button>
+                                    </div>
+                                </div>
+                        </div>
+                    {% endfor %}
+                </div>
+        </section>
+
+    </div>
+
+    <script>
+    
+        document.addEventListener("DOMContentLoaded", function () {
+            const categoryButtons = document.querySelectorAll("#category-button");
+            const products = document.querySelectorAll(".product");
+
+            categoryButtons.forEach(button => {
+                button.addEventListener("click", () => {
+                    const category = button.getAttribute("data-category");
+
+                    products.forEach(product => {
+                        if (product.getAttribute("data-category") === category) {
+                            product.style.display = "block";
+                        } else {
+                            product.style.display = "none";
+                        }
+                    });
+                });
+            });
+        });
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const productsContainer = document.getElementById('product-container');
+
+            const handleExclusiveSelection = (groupName, selectedId) => {
+                const checkboxes = document.querySelectorAll(`input[name="${groupName}"]`);
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.id !== selectedId) {
+                        checkbox.checked = false; 
+                    }
+                });
+            };
+
+            const sortProducts = (criteria, order) => {
+                const products = Array.from(productsContainer.querySelectorAll('.product'));
+
+                products.sort((a, b) => {
+                    let valA = a.dataset[criteria];
+                    let valB = b.dataset[criteria];
+
+                    if (criteria === 'price') {
+                        valA = parseFloat(valA);
+                        valB = parseFloat(valB);
+                    }
+
+                    if (order === 'asc') return valA > valB ? 1 : -1;
+                    else return valA < valB ? 1 : -1;
+                });
+
+                productsContainer.innerHTML = '';
+                products.forEach(product => productsContainer.appendChild(product));
+            };
+
+            document.getElementById('sort-price-asc').addEventListener('change', (e) => {
+                handleExclusiveSelection('price-sort', e.target.id);
+                if (e.target.checked) sortProducts('price', 'asc');
+            });
+
+            document.getElementById('sort-price-desc').addEventListener('change', (e) => {
+                handleExclusiveSelection('price-sort', e.target.id);
+                if (e.target.checked) sortProducts('price', 'desc');
+            });
+
+            document.getElementById('sort-name-asc').addEventListener('change', (e) => {
+                handleExclusiveSelection('name-sort', e.target.id);
+                if (e.target.checked) sortProducts('name', 'asc');
+            });
+
+            document.getElementById('sort-name-desc').addEventListener('change', (e) => {
+                handleExclusiveSelection('name-sort', e.target.id);
+                if (e.target.checked) sortProducts('name', 'desc');
+            });
+        }); 
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const addToCartButtons = document.querySelectorAll(".addToCart");
+
+            addToCartButtons.forEach(button => {
+                button.addEventListener("click", () => {
+                    const productId = button.getAttribute("data-product-id");
+
+                    fetch("{% url 'add_to_cart' %}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": getCookie("csrftoken") 
+                        },
+                        body: JSON.stringify({ product_id: productId })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert("Product added to cart!");
+                            updateCartDisplay();
+                        } else {
+                            alert("Failed to add product to cart.");
+                        }
+                    })
+                    .catch(error => console.error("Error:", error));
+                });
+            });
+        });
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== "") {
+                const cookies = document.cookie.split(";");
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === name + "=") {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+
+{% endblock content %}
+
+ 

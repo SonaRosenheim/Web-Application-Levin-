@@ -1,0 +1,261 @@
+{% extends 'app/base.html' %}
+{% include 'app/navbar.html' %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/user_cart.css' %}">
+
+<div class="head-container">
+
+    {% if messages %}
+    <div>
+        {% for message in messages %}
+        <div class="alert {{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <a href="{% url 'store' %}"><i class="fa fa-arrow-left" aria-hidden="true"></i>Continue Shopping ?</a>
+    <div class="body-section">
+        <div class="cart-section">
+            <div class="header-container">
+                <h1>Cart</h1>
+            </div>
+            <div class="category-container">
+                <div class="category">
+                    <h3>Product Name</h3>
+                </div>
+                <div class="category">
+                    <h3>Quantity</h3>
+                </div>
+                <div class="category">
+                    <h3>Total</h3>
+                </div>
+                <div class="category">
+                    <h3>Action</h3>
+                </div> 
+            </div>
+            <div class="items-ordered">
+            {% if user.cart_items.exists %}
+                {% for item in user.cart_items.all %}
+                <div class="item-container">
+                    <div class="item-img-container">
+                        <img src="{{ item.product.prod_photo.url }}" alt="{{ item.product.prod_name }}">
+                    </div>
+                    <div class="item-name">
+                        <span>{{ item.product.prod_name }}</span>
+                    </div>
+                    <div class="item-value-container">
+                        <span>
+                            <button class="decrease-quantity btn" data-cart-id="{{ item.cart_id }}">-</button>
+                            {{ item.quantity }}
+                            <button class="increase-quantity btn" data-cart-id="{{ item.cart_id }}">+</button>
+                        </span>
+                    </div>
+                    <div class="item-price-container">
+                        <span>₱{{ item.total_price }}</span>
+                    </div>
+                    <div class="action-container">
+                        <button class="remove-item btn" data-cart-id="{{ item.cart_id }}">Remove</button>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-cart-item">
+                    <span>Cart is currently empty.</span>
+                </div>  
+            {% endif %}  
+            </div>
+        </div>
+        <div class="shipping-section">
+            <div class="header-container">
+                <h1>Shipping Details</h1>
+            </div>
+            <div class="shipping-details">
+                <div class="user-address-container">
+                    <div class="text-select">
+                        <label for="user-address">Select Address:</label>
+                    </div>
+                    <div class="address-option">
+                        <select id="user-address">
+                            {% for address in user.addresses.all %}
+                                <option value="{{ address.address_id }}">
+                                    {{ address.address_line1 }}, {{ address.address_line2 }}, {{ address.postal_code }}, {{ address.country }}
+                                </option>
+                            {% empty %}
+                                <option disabled>No addresses available. Please add one.</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            
+                <div class="user-shipping">
+                    <label for="shipping-option">Shipping Option:</label>
+                    <select id="shipping-option">
+                        <option value="standard" data-fee="50">Standard Delivery</option>
+                        <option value="express" data-fee="100">Express Delivery</option>
+                    </select>
+                </div>
+
+                <div id="shipping-fee-container">
+                    <span>Shipping Fee: ₱<span id="shipping-fee">50</span></span>
+                </div>
+
+                <div class="payment-container">
+                    <label for="payment-method">Select Payment Method:</label>
+                    <select id="payment-method">
+                        {% for payment in user.payments.all %}
+                            <option value="{{ payment.payment_id }}" {% if payment.is_default %}selected{% endif %}>
+                                {{ payment.get_payment_type_display }} 
+                                {% if payment.payment_type == 'CC' %} (****{{ payment.card_no|slice:"-4:" }}) {% endif %}
+                                {% if payment.payment_type == 'GC' or payment.payment_type == 'PM' %}
+                                    ({{ payment.phone_number }})
+                                {% endif %}
+                            </option>
+                        {% empty %}
+                            <option disabled>No payment methods available. Please add one.</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="order-section">
+            <div class="header-container">
+                <h1>Order Details</h1>
+            </div>
+            <div class="order-details">
+                <div class="fee-container">
+                    <div class="fee-item">
+                        <span>Subtotal:</span>
+                        <span>₱<span id="subtotal">0.00</span></span>
+                    </div>
+                    <div class="fee-item">
+                        <span>Shipping Fee:</span>
+                        <span>₱<span id="shipping-fee-summary">0.00</span></span>
+                    </div>
+                    <hr>
+                    <div class="fee-total">
+                        <span>Total:</span>
+                        <span>₱<span id="total-expense">0.00</span></span>
+                    </div>
+                </div>
+
+                <div class="action-container">
+                    <form id="place-order-form" method="POST" action="{% url 'place_order' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="address_id" id="address-id">
+                        <input type="hidden" name="payment_id" id="payment-id">
+                        <input type="hidden" name="shipping_option" id="shipping-option-input">
+                        <button id="place-order-button" class="btn" type="submit">Place Order</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Event listeners for cart actions
+        document.addEventListener("click", (event) => {
+            if (event.target.classList.contains("increase-quantity")) {
+                updateCartItem(event.target.dataset.cartId, "increase");
+            } else if (event.target.classList.contains("decrease-quantity")) {
+                updateCartItem(event.target.dataset.cartId, "decrease");
+            } else if (event.target.classList.contains("remove-item")) {
+                updateCartItem(event.target.dataset.cartId, "remove");
+            }
+        });
+
+        function updateCartItem(cartId, action) {
+            fetch("{% url 'update_cart_item' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCookie("csrftoken")
+                },
+                body: JSON.stringify({ cart_id: cartId, action: action })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Response Data:", data); // Debugging
+                if (data.success) {
+                    updateCartDisplay();
+                } else {
+                    alert(data.message || "Failed to update cart.");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        function updateCartDisplay() {
+            location.reload(); 
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== "") {
+                const cookies = document.cookie.split(";");
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === name + "=") {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+        const shippingOptionDropdown = document.getElementById("shipping-option");
+        const shippingFeeDisplay = document.getElementById("shipping-fee");
+        const subtotalDisplay = document.getElementById("subtotal");
+        const totalDisplay = document.getElementById("total-expense");
+        const shippingSummary = document.getElementById("shipping-fee-summary");
+
+        function updateTotals() {
+            const shippingFee = parseFloat(shippingOptionDropdown.options[shippingOptionDropdown.selectedIndex].dataset.fee);
+            const subtotal = Array.from(document.querySelectorAll(".item-price-container span"))
+                .reduce((sum, price) => sum + parseFloat(price.textContent.replace("₱", "")), 0);
+
+            shippingFeeDisplay.textContent = shippingFee.toFixed(2);
+            subtotalDisplay.textContent = subtotal.toFixed(2);
+            shippingSummary.textContent = shippingFee.toFixed(2);
+            totalDisplay.textContent = (subtotal + shippingFee).toFixed(2);
+        }
+
+        shippingOptionDropdown.addEventListener("change", updateTotals);
+
+        document.addEventListener("click", (event) => {
+            if (event.target.classList.contains("increase-quantity") || event.target.classList.contains("decrease-quantity") || event.target.classList.contains("remove-item")) {
+                setTimeout(updateTotals, 500);
+            }
+        });
+
+        updateTotals();
+    });
+
+    document.getElementById("place-order-button").addEventListener("click", (event) => {
+        event.preventDefault();
+
+        const addressSelect = document.getElementById("user-address");
+        const paymentSelect = document.getElementById("payment-method");
+        const shippingOption = document.getElementById("shipping-option");
+
+        document.getElementById("address-id").value = addressSelect.value;
+        document.getElementById("payment-id").value = paymentSelect.value;
+        document.getElementById("shipping-option-input").value = shippingOption.value;
+
+        document.getElementById("place-order-form").submit();
+    });
+
+</script>
+{% endblock content %}

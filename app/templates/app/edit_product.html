@@ -1,0 +1,155 @@
+{% extends 'app/base.html' %}
+{% include 'app/navbar.html' %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/edit_product.css' %}">
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Image</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                    <th>Quantity</th>
+                    <th>Actions</th>    
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    <tr data-id="{{ product.prod_id }}">
+                        <td>{{ product.prod_name }}</td>
+                        <td><img src="{{ product.prod_photo.url }}" alt="product image" width="50" height="50"></td>
+                        <td>{{ product.description }}</td>
+                        <td>₱{{ product.prod_price }}</td>
+                        <td data-category-id="{{ product.category_prod.category_id }}">
+                            {{ product.category_prod.category_name }}
+                        </td>
+                        <td>{{ product.inventory_prod }}</td>
+                        <td class="action-button">
+                            <button type="button" class="edit-button action-button">Edit</button>
+                            <button type="button" class="delete-button action-button">Delete</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h2>Edit Product</h2>
+            <form method="POST" action="" id="editProductForm" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="prod_name">Name:</label>
+                    <input type="text" name="prod_name" id="edit_prod_name" class="form-control" value="{{ product.prod_name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea name="description" id="edit_description" class="form-control" rows="7" cols="50" style="resize: none;" required>{{ product.description }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="prod_price">Price:</label>
+                    <input type="number" name="prod_price" id="edit_prod_price" class="form-control" value="{{ product.prod_price }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="prod_photo">Product Image:</label>
+                    <input type="file" name="prod_photo" id="edit_prod_photo" class="form-control">
+                </div>
+                <input type="hidden" name="product_id" id="edit_product_id" value="{{ product.prod_id }}">
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Update Product</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+<script>
+    function openEditModal() {
+        document.getElementById('editModal').style.display = 'block';
+    }
+
+    function closeEditModal() {
+        document.getElementById('editModal').style.display = 'none';
+    }
+
+    document.querySelectorAll('.edit-button').forEach(button => {
+        button.addEventListener('click', function () {
+            const row = this.closest('tr');
+            const productId = row.getAttribute('data-id');
+
+            document.getElementById('edit_product_id').value = productId;
+            document.getElementById('edit_prod_name').value = row.cells[0].innerText;
+            document.getElementById('edit_description').value = row.cells[2].innerText;
+            document.getElementById('edit_prod_price').value = row.cells[3].innerText.replace('₱', '').trim();
+
+            document.getElementById('editProductForm').action = `/product/edit/${productId}/`;
+
+            openEditModal();
+        });
+    });
+
+    document.getElementById('editProductForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+
+        const actionUrl = document.getElementById('editProductForm').action;
+
+        fetch(actionUrl, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Product updated successfully!');
+                location.reload();
+            } else {
+                alert('Failed to update product.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    document.querySelectorAll('.delete-button').forEach(button => {
+        button.addEventListener('click', function () {
+            const row = this.closest('tr');
+            const productId = row.getAttribute('data-id');
+
+            if (confirm('Are you sure you want to delete this product?')) {
+                fetch(`/delete-product/${productId}/`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}', 
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Product deleted successfully!');
+                            row.remove(); 
+                        } else {
+                            alert('Failed to delete product.');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        });
+    });
+
+</script>
+
+{% endblock content %}

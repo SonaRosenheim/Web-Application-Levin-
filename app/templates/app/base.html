@@ -1,0 +1,65 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Levin.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}"> 
+    <link rel="icon" href="{% static 'images/Favicon-LN.ico' %}">
+</head>
+<body>
+
+
+
+{% include 'app/navbar.html' %}
+
+{% block content %}
+
+{% endblock content %} 
+
+{% include 'app/footer.html' %}
+
+<script src="{% static 'js/base.js' %}">
+
+    document.getElementById('productForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                document.getElementById('resultMessage').innerHTML = 
+                    `<div class="alert alert-success">Product created successfully!</div>`;
+                form.reset();
+            } else {
+                const errorData = await response.json();
+                let errors = '';
+                for (const [field, messages] of Object.entries(errorData.errors)) {
+                    errors += `${field}: ${messages.join(', ')}<br>`;
+                }
+                document.getElementById('resultMessage').innerHTML = 
+                    `<div class="alert alert-danger">Errors:<br>${errors}</div>`;
+            }
+        } catch (error) {
+            document.getElementById('resultMessage').innerHTML = 
+                `<div class="alert alert-danger">Something went wrong: ${error.message}</div>`;
+        }
+    });
+    
+</script> 
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+</body>
+</html>
+
