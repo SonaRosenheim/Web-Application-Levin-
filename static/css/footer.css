@@ -1,0 +1,159 @@
+.return-up-btn {
+    display: flex;
+    justify-content: flex-end; 
+    opacity: 0.3;
+    transition: 1s;
+}
+.return-up-btn a {
+    background-color: #eeeeee;
+    border-radius: 100%;
+    padding: 5px 10px;
+    text-decoration: none;
+}
+.return-up-btn:hover {
+    opacity: 1;
+}
+    
+.return-up-btn a i {
+    font-size: 26px;
+    color: var(--color-default);
+}
+
+.about-us {
+    background-color: var(--color-primary);
+}
+
+.levin-logo {
+    font-family: var(--font-default);
+    font-size: 27px;
+    text-align: center;
+    padding: 15px;
+}
+
+.levin-logo h1, .contact-us .info, .ceo .info, .location .info {
+    color: var(--color-secondary);
+}
+
+.levin-logo span, .contact-us h3, .ceo h3, .location h3  {
+    color: var(--color-tertiary);
+}
+
+.about-me-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.contact-us, .ceo, .location {
+    width: 500px;
+    padding: 15px 20px;
+}
+
+.contact-us h3, .ceo h3, .location h3 {
+    letter-spacing: 2px;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+}
+
+.info span {
+    margin-top: 3px;
+}
+
+.social-links {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-bottom: 30px;
+}
+
+.social-links a img {
+    width: auto;
+    height: 28px;
+    padding: 0px 35px;
+    transition: 1s;
+}
+.social-links a img:hover {
+    height: 45px;
+}
+
+@media (max-width: 768px) {
+   .levin-logo {
+        font-size: 20px;
+    }
+
+    .contact-us h3, .ceo h3, .location h3 {
+        font-size: 16px;
+    }
+
+    .info span {
+        font-size: 14px;
+    }
+
+    .social-links a img {
+        height: 26px;
+    }
+}
+
+@media (max-width: 425px) {
+    .levin-logo {
+        font-size: 18px;
+    }
+
+    .contact-us h3, .ceo h3, .location h3 {
+        font-size: 14px;
+    }
+
+    .info span {
+        font-size: 12px;
+    }
+
+    .info .university {
+        font-size: 9px;
+    }
+
+    .social-links a img {
+        height: 24px;
+        padding: 0px 22px;
+    }
+    
+}
+
+@media (max-width: 375px) {
+    .levin-logo {
+        font-size: 16px;
+    }
+
+    .contact-us h3, .ceo h3, .location h3 {
+        font-size: 12px;
+    }
+
+    .info span {
+        font-size: 10px;
+    }
+
+    .info .university {
+        font-size: 9px;
+    }
+
+    .contact-us, .ceo, .location {
+        padding: 10px 10px;
+    }
+
+    .social-links a img {
+        height: 20px;
+        padding: 0px 22px;
+    }
+}
+
+@media (max-width: 320px) {
+    .contact-us, .ceo, .location {
+        width: 120px;
+        padding: 8px 8px;
+    }
+}

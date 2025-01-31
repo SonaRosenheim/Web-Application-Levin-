@@ -1,0 +1,114 @@
+.form-container {
+    margin-top: 70px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+    align-items: baseline;
+    padding: 50px 0;
+    background-color: var(--color-quinary);
+}
+
+.header-container {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.header-container h1 {
+    font-family: var(--font-secondary);
+    font-weight: 500;
+}
+
+#productForm {
+    background-color: var(--color-secondary);
+    padding: 20px 35px;
+    border: 2px solid var(--color-quaternary);
+    border-radius: 1.5rem;
+    box-shadow: 10px 10px 15px var(--color-default);
+}
+
+.form-group label {
+    font-family: var(--font-default);
+    font-weight: 500;
+    font-size: 1.2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 13px;
+}
+
+.form-group input[type=text], .form-group input[type=number], .dropdown, textarea {
+    padding: 10px 10px;
+    font-size: 15px;
+    border-radius: 7px;
+    border: 2px solid var(--color-quaternary);
+}
+
+.form-group input[type=file] {
+    font-size: 15px;
+}
+input[type="file"]::file-selector-button {
+    cursor: pointer;
+    padding: 10px 10px;
+    border-radius: 7px;
+    border: 2px solid var(--color-quaternary);
+}
+
+.form-group button {
+    margin-top: 5px;
+    border-radius: 7px;
+    padding: 8px 10px;
+    border: 2px solid var(--color-quaternary);
+    transition: all 0.5s;
+}
+.form-group button:hover, .btn-primary:hover {
+    cursor: pointer;
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+}
+
+.btn-primary {
+    padding: 8px 10px;
+    border-radius: 7px;
+    width: 100%;
+    border: 2px solid var(--color-quaternary);
+    transition: all 1s;
+}
+
+.create-new-container {
+    background-color: var(--color-secondary);
+    padding: 20px 35px;
+    border: 2px solid var(--color-quaternary);
+    border-radius: 1.5rem;
+    box-shadow: 10px 10px 15px var(--color-default);
+}
+
+#newCategoryForm h4, #newInventoryForm h4{
+    font-family: var(--font-secondary);
+    font-weight: 500;
+    font-size: 32px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+#newCategoryForm .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+#newCategoryForm .form-group label, #newInventoryForm .form-group label{
+    font-family: var(--font-default);
+    font-weight: 500;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+#newCategoryForm .form-group input[type="text"],
+#newInventoryForm .form-group input[type="number"] {
+    padding: 10px;
+    font-size: 15px;
+    border-radius: 7px;
+    border: 2px solid var(--color-quaternary);
+}

@@ -1,0 +1,250 @@
+.hero { 
+    background-color: var(--color-quinary);
+    position: relative;
+    padding-top: 80px;
+    padding-bottom: 80px;
+    margin-top: 85px;
+    left: 0%;
+    width: 100%;
+    height: auto;
+}
+
+.hero-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between; 
+}
+
+.section-header {
+    margin-left: 15%;
+}
+
+.section-header h2 {
+    font-family: sans-serif;
+    font-size: 45px;    
+    margin-bottom: 0;
+}
+
+.section-header p {
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+.section-logo {
+    margin-right: 15%;
+}
+
+.section-logo img {
+    height: auto;
+    width: 550px;
+}
+
+.top-title, .main-title {
+    text-align: center;
+    z-index: 1;
+    margin-bottom: 0;
+}
+
+.product-display {
+    display: block;
+}
+
+.product-image-container {
+    margin-top: 25px;
+    margin-bottom: 0px;
+}
+
+.top-title {
+    color: var(--color-septenary);
+    font-family: var(--font-secondary);
+    font-size: 15px;
+    letter-spacing: 1px;
+    margin-top: 0;
+}
+
+.main-title {
+    font-family: var(--font-default);
+    font-weight: 500;
+    font-size: 55px;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+.product-image-grid {
+    width: 100%;
+    height: 780px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.product-image-grid-left-side {
+    display: grid;
+    padding: 2%;
+}
+
+.item-1-container {
+    height: 730px;
+}
+
+.item-1-container img, .item-2-container img, .item-3-container img, .item-4-container img, .item-5-container img {
+    width: 100%;
+    height: inherit;
+    object-fit: cover;
+}
+
+.product-image-grid-right-side {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 4%;
+    padding: 2%;
+}
+
+.item-2-container, .item-3-container, .item-4-container, .item-5-container {
+    height: 350px;
+    width: 100%;
+}
+
+
+
+@media (max-width: 1440px) {
+    .section-logo img {
+        height: auto;
+        width: 450px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .hero {
+        margin-top: 80px;
+    }
+
+    .section-header h2 {
+        font-size: 30px;    
+    }   
+
+    .section-header p {
+        font-size: 16px;
+    }
+
+    .section-logo img {
+        height: auto;
+        width: 380px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 42.5px;
+        margin-top: 70px;
+        display: flex;  
+        justify-content: center;
+    }
+
+    .hero-container {
+        flex-direction: column-reverse; 
+        justify-content: center;
+    }
+
+    .section-header, .section-logo {
+        margin-right: 0%;
+        margin-left: 0%;
+    }
+
+    .section-header h2, .section-header p {
+        text-align: center;
+    }
+
+    .section-header p {
+        font-size: 20px;
+    }
+
+    .section-logo img {
+        height: auto;
+        width: 350px;
+    }
+    
+    .main-title {
+        font-size: 45px;
+    }
+
+    .product-image-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        margin-bottom: 700px;
+    }
+
+    .product-image-grid {
+        margin-bottom: 720px;
+    }
+}
+
+@media (max-width: 425px) {
+    .hero {
+        margin-top: 65px;
+    }
+
+    .section-header p {
+        font-size: 16px;
+    }
+
+    .section-logo img {
+        height: auto;
+        width: 280px;
+    }
+
+    .main-title {
+        font-size: 35px;
+    }
+
+    .product-image-grid-right-side {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .product-image-grid {
+        margin-bottom: 1420px;
+    }
+}
+
+@media (max-width: 375px) {
+    .section-header h2 {
+        font-size: 30px;    
+    }  
+
+    .section-header p {
+        margin-bottom: 0%;
+        font-size: 15px;
+    }
+
+    .section-logo img {
+        height: auto;
+        width: 240px;
+    }
+
+    .top-title {
+        font-size: 12px;
+    }
+
+    .main-title {
+        font-size: 35px;
+    }
+
+    .product-image-grid {
+        margin-bottom: 1390px;
+    }
+}
+
+@media (max-width: 320px) {
+    .hero {
+        margin-top: 60px;
+    }
+
+    .top-title {
+        font-size: 12px;
+    }
+
+    .main-title {
+        font-size: 25px;
+    }
+}
